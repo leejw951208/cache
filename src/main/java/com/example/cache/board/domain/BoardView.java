@@ -9,5 +9,5 @@ public record BoardView(
         String post,
         String author,
         LocalDateTime postedOn
-) implements Serializable {
+) {
 }

@@ -11,7 +11,7 @@ public record BoardViewDto(
         String title,
         String post,
         String author,
-        /*@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")*/
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime postedOn
-) implements Serializable {
+) {
 }
