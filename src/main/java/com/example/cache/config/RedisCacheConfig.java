@@ -1,5 +1,8 @@
 package com.example.cache.config;
 
+import com.example.cache.board.domain.BoardView;
+import com.example.cache.board.dto.BoardViewDto;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -24,21 +27,26 @@ import java.time.Duration;
 public class RedisCacheConfig {
     @Bean
     public ObjectMapper objectMapper() {
-        /*PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
+        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
                 .allowIfSubType(Object.class)
-                .build();*/
+                .allowIfBaseType(Object.class)
+                .allowIfSubType(BoardViewDto.class)
+                .allowIfBaseType(BoardViewDto.class)
+                .allowIfSubType(BoardView.class)
+                .build();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        /*objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);*/
+        objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
         return objectMapper;
     }
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory cf) {
+        GenericJackson2JsonRedisSerializer redisSerializer = new GenericJackson2JsonRedisSerializer(objectMapper());
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper())))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
                 .entryTtl(Duration.ofMinutes(1))
                 .disableCachingNullValues();
         return RedisCacheManager.RedisCacheManagerBuilder
