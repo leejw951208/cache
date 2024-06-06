@@ -2,6 +2,7 @@ package com.example.cache.board.controller;
 
 import com.example.cache.board.domain.BoardSave;
 import com.example.cache.board.domain.BoardView;
+import com.example.cache.board.domain.BoardViewTest;
 import com.example.cache.board.dto.BoardSaveDto;
 import com.example.cache.board.dto.BoardViewDto;
 import com.example.cache.board.service.BoardService;
@@ -24,7 +25,7 @@ public class BoardController {
     @GetMapping("/api/board/{id}")
     public ResponseEntity<BoardViewDto> findBoard(@PathVariable("id") long id) {
         BoardView boardView = boardService.findBoard(id);
-        BoardViewDto boardViewDto = new BoardViewDto(boardView.boardId(), boardView.title(), boardView.post(), boardView.author(), boardView.postedOn());
+        BoardViewDto boardViewDto = new BoardViewDto(boardView.boardId(), boardView.title(), boardView.post(), boardView.author(), boardView.postOn());
         return new ResponseEntity<>(boardViewDto, HttpStatus.OK);
     }
 }

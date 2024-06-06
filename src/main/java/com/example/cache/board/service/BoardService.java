@@ -2,6 +2,7 @@ package com.example.cache.board.service;
 
 import com.example.cache.board.domain.BoardSave;
 import com.example.cache.board.domain.BoardView;
+import com.example.cache.board.domain.BoardViewTest;
 import com.example.cache.board.entity.BoardEntity;
 import com.example.cache.board.eventlistener.BoardSavedEvent;
 import com.example.cache.board.repository.BoardEntityJpaRepository;
@@ -36,6 +37,7 @@ public class BoardService {
     }
 
     @Cacheable(cacheNames = BOARD, key = "#id", condition = "#id != null", cacheManager = "cacheManager")
+    @Transactional(readOnly = true)
     public BoardView findBoard(long id) {
         BoardEntity findEntity = boardEntityJpaRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
