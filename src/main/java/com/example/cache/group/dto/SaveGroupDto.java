@@ -1,4 +1,4 @@
 package com.example.cache.group.dto;
 
-public record SaveGroupDto(String groupName) {
+public record SaveGroupDto(String name) {
 }

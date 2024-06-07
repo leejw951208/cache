@@ -1,7 +1,8 @@
 package com.example.cache.group.repository;
 
 import com.example.cache.group.domain.Group;
-import com.example.cache.group.domain.GroupTest;
+import com.example.cache.group.domain.GroupSave;
+import com.example.cache.group.mapper.GroupMapper;
 import com.example.cache.group.persistence.GroupEntity;
 import com.example.cache.group.persistence.GroupEntityRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,31 +14,18 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class GroupRepositoryImpl implements GroupRepository {
     private final GroupEntityRepository groupEntityRepository;
+    private final GroupMapper groupMapper;
 
     @Override
-    public void save(String groupName) {
-        groupEntityRepository.save(
-                GroupEntity.builder()
-                        .name(groupName)
-                        .build()
-        );
+    public long save(GroupSave groupSave) {
+        GroupEntity createdEntity = groupMapper.toEntity(groupSave);
+        return groupEntityRepository.save(createdEntity).getId();
     }
 
     @Override
-    public Group findById(long id) {
-        GroupEntity findEntity = groupEntityRepository.findById(id)
+    public Group findById(long groupId) {
+        GroupEntity findEntity = groupEntityRepository.findById(groupId)
                 .orElseThrow(() -> new NoSuchElementException("그룹을 찾을 수 업습니다."));
-        return new Group(findEntity.getId(), findEntity.getName(), findEntity.getCreatedDate());
-    }
-
-    @Override
-    public GroupTest findByIdTest(long id) {
-        GroupEntity findEntity = groupEntityRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("그룹을 찾을 수 업습니다."));
-        return GroupTest.builder()
-                .groupId(findEntity.getId())
-                .groupName(findEntity.getName())
-                .createdDate(findEntity.getCreatedDate())
-                .build();
+        return groupMapper.toDomain(findEntity);
     }
 }

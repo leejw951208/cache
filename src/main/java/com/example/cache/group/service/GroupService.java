@@ -1,7 +1,7 @@
 package com.example.cache.group.service;
 
 import com.example.cache.group.domain.Group;
-import com.example.cache.group.domain.GroupTest;
+import com.example.cache.group.domain.GroupSave;
 import com.example.cache.group.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,11 +14,11 @@ public class GroupService {
     private final GroupRepository groupRepository;
 
     @Transactional
-    public void saveGroup(String groupName) {
-        groupRepository.save(groupName);
+    public long saveGroup(GroupSave groupSave) {
+        return groupRepository.save(groupSave);
     }
 
-    @Cacheable(cacheNames = "group", key = "#groupId", condition = "#groupId != null", cacheManager = "cacheManager")
+    @Cacheable(key = "#groupId", condition = "#groupId > 0", cacheManager = "cacheManager", cacheNames = "group")
     @Transactional(readOnly = true)
     public Group findGroup(long groupId) {
         return groupRepository.findById(groupId);
