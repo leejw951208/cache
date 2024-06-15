@@ -3,7 +3,7 @@ package com.example.cache.groupmember.repository;
 import com.example.cache.group.domain.Group;
 import com.example.cache.group.mapper.GroupMapper;
 import com.example.cache.group.persistence.GroupEntity;
-import com.example.cache.groupmember.domain.ByMember;
+
 import com.example.cache.groupmember.mapper.GroupMemberMapper;
 import com.example.cache.groupmember.persistence.GroupMemberEntity;
 import com.example.cache.groupmember.persistence.GroupMemberEntityRepository;

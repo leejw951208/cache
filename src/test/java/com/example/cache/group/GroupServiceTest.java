@@ -22,9 +22,6 @@ public class GroupServiceTest {
     @Mock
     private GroupRepository groupRepository;
 
-    @Mock
-    private GroupMapper groupMapper;
-
     @InjectMocks
     private GroupService groupService;
 

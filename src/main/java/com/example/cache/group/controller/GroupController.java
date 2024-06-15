@@ -28,6 +28,12 @@ public class GroupController {
         return new ResponseEntity<>(groupService.saveGroup(groupSave), HttpStatus.CREATED);
     }
 
+    @PutMapping("/api/group/{id}")
+    public ResponseEntity<Long> updateGroup(@PathVariable long id, @RequestBody SaveGroupDto saveGroupDto) {
+        GroupSave groupSave = groupMapper.toDomain(saveGroupDto);
+        return new ResponseEntity<>(groupService.updateGroup(id, groupSave), HttpStatus.CREATED);
+    }
+
     @GetMapping("/api/group/{id}")
     public ResponseEntity<GroupDto> findGroup(@PathVariable("id") long groupId) {
         Group findGroup = groupService.findGroup(groupId);

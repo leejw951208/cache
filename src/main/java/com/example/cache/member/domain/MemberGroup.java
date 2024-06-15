@@ -2,9 +2,21 @@ package com.example.cache.member.domain;
 
 import com.example.cache.group.domain.Group;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public record MemberGroup(long id, String name, int age, LocalDateTime createdDate, Group group) {
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MemberGroup {
+    private long id;
+    private String name;
+    private int age;
+    private LocalDateTime createdDate;
+    private Group group;
 }

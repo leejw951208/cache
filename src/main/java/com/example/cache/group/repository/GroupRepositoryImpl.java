@@ -23,6 +23,12 @@ public class GroupRepositoryImpl implements GroupRepository {
     }
 
     @Override
+    public long save(Group group) {
+        GroupEntity groupEntity = groupMapper.toEntity(group);
+        return groupEntityRepository.save(groupEntity).getId();
+    }
+
+    @Override
     public Group findById(long groupId) {
         GroupEntity findEntity = groupEntityRepository.findById(groupId)
                 .orElseThrow(() -> new NoSuchElementException("그룹을 찾을 수 업습니다."));

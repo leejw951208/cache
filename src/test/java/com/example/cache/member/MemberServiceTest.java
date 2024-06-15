@@ -78,6 +78,6 @@ public class MemberServiceTest {
 
         // then
         assertEquals(findMemberGroup, memberGroup);
-        assertEquals(findMemberGroup.group(), group);
+        assertEquals(findMemberGroup.getGroup(), group);
     }
 }
