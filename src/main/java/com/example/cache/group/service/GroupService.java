@@ -16,19 +16,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class GroupService {
     private final GroupRepository groupRepository;
 
+    private static final String CACHE_NAMES = "group";
+
     @Transactional
     public long saveGroup(GroupSave groupSave) {
         return groupRepository.save(groupSave);
     }
 
-    @Cacheable(key = "#groupId", condition = "#groupId > 0", cacheNames = "group")
+    @Cacheable(key = "'group_' + #groupId", condition = "#groupId > 0", cacheNames = CACHE_NAMES, cacheManager = "cacheManager")
     @Transactional(readOnly = true)
     public Group findGroup(long groupId) {
         return groupRepository.findById(groupId);
     }
 
     @Transactional
-    @CacheEvict(cacheNames = "group", key = "#groupId")
+    @CacheEvict(key = "'group_' + #groupId", condition = "#groupId > 0", cacheNames = CACHE_NAMES, cacheManager = "cacheManager")
     public long updateGroup(long groupId, GroupSave groupSave) {
         Group findGroup = groupRepository.findById(groupId);
         findGroup.updateName(groupSave.getName());
